@@ -21,7 +21,7 @@ class Communication:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def send(self, data):
-        print("sending: ", data)
+        #print("sending: ", data)
         self.sock.sendall(data)
 
     def recv(self):
@@ -66,13 +66,24 @@ class Communication:
                     data += element.to_bytes(4, byteorder = 'little')
 
         self.send(data)
+        r = self.sock.recv(2)
+        if r[0] == 6: #ACK
+            return r[1]
+        elif r[0] == 21:    #NAK
+            print("Error, server could not read request; error code: " + str(r[1]), file=sys.stderr)
+            return -1
+        else :
+            return r[0]
 
 lol = Communication('127.0.0.1', 3333)
 lol.connect()
 
-lol.pack(0,[[0,0,10,0xff]])
-lol.pack(0,[[0,0,10,0x100]])
-lol.pack(0,[[0,0,10,0xffff]])
-lol.pack(0,[[0,0,10,0x10000]])
-lol.pack(1, [0xff00ff00]);
+print("index: " + str(lol.pack(0,[[0,0,10,0xff]])))
+print("index: " + str(lol.pack(0,[[0,0,10,0x100]])))
+print("index: " + str(lol.pack(0,[[0,0,10,0xffff]])))
+print("index: " + str(lol.pack(0,[[0,0,10,0x10000]])))
+print("index: " + str(lol.pack(1, [0xff00ff00])))
+print("index: " + str(lol.pack(0,[[0,0,10,0xff,1],1])))
+print("index: " + str(lol.pack(10, [0xff00ff00])))
+print("index: " + str(lol.pack(1, [0xffffff00])))
 lol.disconnect()

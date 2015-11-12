@@ -130,8 +130,34 @@ int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdLi
 				firstRecive = false;
 			}
 			else {
-				cmdPointer = &unPack(buffer);
+				try {
+					cmdPointer = &unPack(buffer);
+				}
+				catch (int e) {
+					//Send a negitive acknoledge (NAK) and the error code back to the client to tell them the commmand failed.
+					std::cerr << "Could not unpack data: " << e - 100 << std::endl;
+					buffer[0] = 21; //NAK
+					buffer[1] = e - 100;
+					iSendResult = send(ClientSocket, (char*)buffer, 2, 0);
+					if (iSendResult == SOCKET_ERROR) {
+						printf("send failed with error: %d\n", WSAGetLastError());
+						closesocket(ClientSocket);
+						WSACleanup();
+						return 1;
+					}
+					continue;
+				}
 				cmdList.push_back(*cmdPointer);
+				//send an acknoledge (ACK) to the client along with the command Object Index
+				buffer[0] = 6;
+				buffer[1] = cmdList.size();
+				iSendResult = send(ClientSocket, (char*)buffer, 2, 0);
+				if (iSendResult == SOCKET_ERROR) {
+					printf("send failed with error: %d\n", WSAGetLastError());
+					closesocket(ClientSocket);
+					WSACleanup();
+					return 1;
+				}
 			}
 
 		}
@@ -171,39 +197,43 @@ Command Communication::unPack(unsigned char buffer[4113]) {
 	unsigned char *argSize;
 	//check the number of arguments vs the expected number of arguments.
 	switch (cmdId) {
-		case 0: assert(argLength == 0);
+		case 0: if (!(argLength == 0)) {
+				throw 100 + cmdId;
+			}
 			break;
-		case 1:
+		case 1: if (!(argLength == 0)) {
+			throw 100 + cmdId;
+			}
 			break;
-		case 2:
+		case 2:throw 100 + cmdId;
 			break;
-		case 3:
+		case 3:throw 100 + cmdId;
 			break;
-		case 4:
+		case 4:throw 100 + cmdId;
 			break;
-		case 5:
+		case 5:throw 100 + cmdId;
 			break;
-		case 6:
+		case 6:throw 100 + cmdId;
 			break;
-		case 7:
+		case 7:throw 100 + cmdId;
 			break;
-		case 8:
+		case 8:throw 100 + cmdId;
 			break;
-		case 9:
+		case 9:throw 100 + cmdId;
 			break;
-		case 10:
+		case 10:throw 100 + cmdId;
 			break;
-		case 11:
+		case 11:throw 100 + cmdId;
 			break;
-		case 12:
+		case 12:throw 100 + cmdId;
 			break;
-		case 13:
+		case 13:throw 100 + cmdId;
 			break;
-		case 14:
+		case 14:throw 100 + cmdId;
 			break;
-		case 15:
+		case 15:throw 100 + cmdId;
 			break;
-		default:
+		default:throw -1;
 			break;
 	}
 	//create array for the argument size (in bytes)
@@ -221,45 +251,49 @@ Command Communication::unPack(unsigned char buffer[4113]) {
 	switch (cmdId) {
 		//draw line: argument 0: array of integers; grouped in fours
 		//argument 1: array length (used internally)
-		case 0:	assert((argSize[0] + 1) % 4 == 0);
+		case 0:	if (!((argSize[0] + 1) % 4 == 0)) {
+			throw 100 + 16 + cmdId;
+			}
 			args[0] = new int[(argSize[0] + 1)/4];
 			memcpy(args[0], &buffer[offset], argSize[0] + 1);
 			args[1] = new int((argSize[0] + 1) / 4);
 			break;
 		//set color: argument 0: an integer that holds the red, green, blue, and alpha values
-		case 1: assert((argSize[0] + 1) <= 4);
+		case 1: if(!((argSize[0] + 1) <= 4)) {
+			throw 100 + 16 + cmdId;
+			}
 			args[0] = new int(0);
 			memcpy(args[0], &buffer[offset], argSize[0] + 1);
 			break;
-		case 2:
+		case 2:throw 100 + 16 + cmdId;
 			break;
-		case 3:
+		case 3:throw 100 + 16 + cmdId;
 			break;
-		case 4:
+		case 4:throw 100 + 16 + cmdId;
 			break;
-		case 5:
+		case 5:throw 100 + 16 + cmdId;
 			break;
-		case 6:
+		case 6:throw 100 + 16 + cmdId;
 			break;
-		case 7:
+		case 7:throw 100 + 16 + cmdId;
 			break;
-		case 8:
+		case 8:throw 100 + 16 + cmdId;
 			break;
-		case 9:
+		case 9:throw 100 + 16 + cmdId;
 			break;
-		case 10:
+		case 10:throw 100 + 16 + cmdId;
 			break;
-		case 11:
+		case 11:throw 100 + 16 + cmdId;
 			break;
-		case 12:
+		case 12:throw 100 + 16 + cmdId;
 			break;
-		case 13:
+		case 13:throw 100 + 16 + cmdId;
 			break;
-		case 14:
+		case 14:throw 100 + 16 + cmdId;
 			break;
-		case 15:
+		case 15:throw 100 + 16 + cmdId;
 			break;
-		default:
+		default:throw -2;
 			break;
 	}
 	//create the Command object and return it
