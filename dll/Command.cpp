@@ -11,7 +11,7 @@ Command::Command(unsigned char cmd, unsigned char l, void **arg)
 Command::Command() {
 
 }
-void Command::printArgs() {
+void Command::printArgs() const{
 	switch (cmdId) {
 		case 0: {
 			int *arrayLength = (int*)args[1];

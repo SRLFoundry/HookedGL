@@ -6,7 +6,7 @@ public:
 	Command(unsigned char cmd, unsigned char l, void **arg);
 	Command();
 	void draw();
-	void printArgs();
+	void printArgs() const;
 	~Command();
 
 private:

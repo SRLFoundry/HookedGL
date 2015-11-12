@@ -1,13 +1,14 @@
 #pragma once
 #include "Command.h"
 #include <string>
+#include <list>
 
 class Communication
 {
 public:
 	Communication();
 	//Constructor
-	int initSocket();
+	int connect(unsigned char buffer[4113], std::list<Command> &cmdList);
 	//create a listening socket and await connection
 	//when connected to, listen to the clients socket for data
 	//end the connection when the client disconnects

@@ -5,6 +5,7 @@
 #include "command.h"
 #include <assert.h>
 #include <iostream>
+#include <list>
 
 //socket includes
 #undef UNICODE
@@ -19,15 +20,14 @@
 
 #pragma comment (lib, "Ws2_32.lib")
 
-#define DEFAULT_BUFLEN 4113
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "3333"
 //socket end
 
 Communication::Communication()
 {
 }
 
-int Communication::initSocket() {
+int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdList) {
 	WSADATA wsaData;
 	int errorCode;
 
@@ -38,8 +38,7 @@ int Communication::initSocket() {
 	struct addrinfo hints;
 
 	int iSendResult;
-	char recvbuf[DEFAULT_BUFLEN];
-	int recvbuflen = DEFAULT_BUFLEN;
+	int bufferlen = 4113;
 
 	// Initialize Winsock
 	errorCode = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -47,7 +46,7 @@ int Communication::initSocket() {
 		printf("WSAStartup failed with error: %d\n", errorCode);
 		return 1;
 	}
-
+	printf("WSAStartup init success\n");
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
@@ -61,7 +60,7 @@ int Communication::initSocket() {
 		WSACleanup();
 		return 1;
 	}
-
+	printf("getaddrinfo success\n");
 	// Create a SOCKET for connecting to server
 	ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 	if (ListenSocket == INVALID_SOCKET) {
@@ -70,6 +69,7 @@ int Communication::initSocket() {
 		WSACleanup();
 		return 1;
 	}
+	printf("listen socket success\n");
 
 	// Setup the TCP listening socket
 	errorCode = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
@@ -80,7 +80,7 @@ int Communication::initSocket() {
 		WSACleanup();
 		return 1;
 	}
-
+	printf("listen socket bind success\n");
 	freeaddrinfo(result);
 
 	errorCode = listen(ListenSocket, SOMAXCONN);
@@ -90,7 +90,7 @@ int Communication::initSocket() {
 		WSACleanup();
 		return 1;
 	}
-
+	printf("listen success\n");
 	// Accept a client socket
 	ClientSocket = accept(ListenSocket, NULL, NULL);
 	if (ClientSocket == INVALID_SOCKET) {
@@ -99,26 +99,41 @@ int Communication::initSocket() {
 		WSACleanup();
 		return 1;
 	}
+	printf("client socket success\n");
 
 	// No longer need server socket
 	closesocket(ListenSocket);
 
+	bool firstRecive = true;
+	Command *cmdPointer;
 	// Receive until the peer shuts down the connection
 	do {
-
-		errorCode = recv(ClientSocket, recvbuf, recvbuflen, 0);
+		errorCode = recv(ClientSocket, (char*)buffer, bufferlen, 0);
 		if (errorCode > 0) {
 			printf("Bytes received: %d\n", errorCode);
 
-			// Echo the buffer back to the sender
-			iSendResult = send(ClientSocket, recvbuf, errorCode, 0);
-			if (iSendResult == SOCKET_ERROR) {
-				printf("send failed with error: %d\n", WSAGetLastError());
-				closesocket(ClientSocket);
-				WSACleanup();
-				return 1;
+			if ((int)buffer[0] != 5 && firstRecive) {
+				printf("client refused closing connection; no hand-shake\n");
+				errorCode = 0;
+				break;
 			}
-			printf("Bytes sent: %d\n", iSendResult);
+			if (firstRecive) {
+				buffer[0] = 6;
+				iSendResult = send(ClientSocket, (char*)buffer, errorCode, 0);
+				if (iSendResult == SOCKET_ERROR) {
+					printf("send failed with error: %d\n", WSAGetLastError());
+					closesocket(ClientSocket);
+					WSACleanup();
+					return 1;
+				}
+				printf("Bytes sent: %d\n", iSendResult);
+				firstRecive = false;
+			}
+			else {
+				cmdPointer = &unPack(buffer);
+				cmdList.push_back(*cmdPointer);
+			}
+
 		}
 		else if (errorCode == 0)
 			printf("Connection closing...\n");
