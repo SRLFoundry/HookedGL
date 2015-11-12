@@ -1,10 +1,13 @@
 import socket
 import sys
+import math
 
 def bytes_needed(n):
+    if type(n) is str:
+        return len(n)
     if n == 0:
         return 1
-    return int(log(n, 256)) + 1
+    return int(math.log(n, 256)) + 1
 
 class Communication:
 
@@ -17,14 +20,14 @@ class Communication:
         self.sock.bind((address, port))
 
     def send(self, data):
-        sock.sendall(data)
+        self.sock.sendall(data)
 
     def recv(self):
         pass
 
     def connect(self):
         # Initialize the connection to the server.
-        sock.connect(self.address, self.port)
+        self.sock.connect(self.address, self.port)
 
         # Send an inquiry to the server to see if it exists.
         self.sock.sendall(chr(5))
@@ -39,12 +42,21 @@ class Communication:
         # number of arguments.
         header = bytes([((cid << 4) & 0xff) | (((len(args) << 4) & 0xff) >> 4)]) 
         data = header
-        
-        for arg in args:
-            data += bytes([(sys.getsizeof(arg) & 0xff) - 1])
 
-        print(data)
+        # This appends the length of the various args to the data to be sent.
+        # The bytesneeded function handles different types.
+        for arg in args:
+            data += bytes([bytes_needed(arg)])
+
+        # This appends the actual data after the lengths are added.
+        for arg in args:
+            if type(arg) is str:
+                data += bytearray(arg, encoding = 'ascii')
+            elif type(arg) is int:
+                data += arg.to_bytes(bytes_needed(arg), byteorder = 'big')
+
+        self.send(data)
 
 lol = Communication('localhost', 80)
 
-lol.pack(10, ["big dogs", 1, 80.201])
+lol.pack(10, ["big dogs", 1, 301, 1777215])
