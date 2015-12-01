@@ -27,7 +27,7 @@ Communication::Communication()
 {
 }
 
-int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdList) {
+int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdList, int &ids) {
 	WSADATA wsaData;
 	int errorCode;
 
@@ -131,7 +131,7 @@ int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdLi
 			}
 			else {
 				try {
-					cmdPointer = &unPack(buffer);
+					cmdPointer = &unPack(buffer, ids);
 				}
 				catch (int e) {
 					//Send a negitive acknoledge (NAK) and the error code back to the client to tell them the commmand failed.
@@ -150,7 +150,7 @@ int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdLi
 				cmdList.push_back(*cmdPointer);
 				//send an acknoledge (ACK) to the client along with the command Object Index
 				buffer[0] = 6;
-				buffer[1] = cmdList.size();
+				buffer[1] = ids++;
 				iSendResult = send(ClientSocket, (char*)buffer, 2, 0);
 				if (iSendResult == SOCKET_ERROR) {
 					printf("send failed with error: %d\n", WSAGetLastError());
@@ -188,7 +188,7 @@ int Communication::connect(unsigned char buffer[4113], std::list<Command> &cmdLi
 	return 0;
 }
 
-Command Communication::unPack(unsigned char buffer[4113]) {
+Command Communication::unPack(unsigned char buffer[4113], int id) {
 	unsigned char header = buffer[0];
 	//1st 4 bits is the command Id (cmdId)
 	unsigned char cmdId = header >> 4;
@@ -297,7 +297,7 @@ Command Communication::unPack(unsigned char buffer[4113]) {
 			break;
 	}
 	//create the Command object and return it
-	Command *answer = new Command(cmdId,argLength,args);
+	Command *answer = new Command(cmdId,argLength,args, id);
 	return *answer;
 }
 

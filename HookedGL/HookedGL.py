@@ -7,13 +7,16 @@ PAPYRUS = 1;
 
 class HookedGL:
     def __init__(self, address, port):
+        from Communication import Communication
         self.address = address
         self.port = port
+        self.comms = Communication(address, port)
+        self.comms.connect()
 
     # r, g, and b are ints from 0 to 255.
     # 1 Byte * 3 = 3 Bytes.
-    def setColor(self, r, g, b):
-        pass
+    def setColor(self, r, g, b, a):
+        return self.comms.pack(1, [((r % 256) << 24) + ((g % 256) << 16) + ((b % 256) << 8) + ((a % 256))])
 
     # size is an int from 0 to 255.
     # 1 Byte.
@@ -23,7 +26,18 @@ class HookedGL:
     # points is an array of at least 4 integers, each 2 Bytes.
     # 2 Bytes * at least 4 = at least 8 Bytes.
     def drawLines(self, points):
-        pass
+        arr = []
+        lastPoint = []
+        for i in points :
+            line = lastPoint
+            for k in i :
+                line.append(k)
+            if(len(line) == 4) :
+                for j in line:
+                    arr.append(j)
+            lastPoint = i
+        if len(arr) % 4 == 0 :
+            return self.comms.pack(0, [arr])
 
     # points is an array of at least 4 integers, each 2 Bytes.
     # 2 Bytes * at least 4 = at least 8 Bytes.
@@ -44,7 +58,7 @@ class HookedGL:
 
     # font is an int ranging from 0 to 255, 1 Bytes in size.
     # 1 Byte.
-    def setFont(self, font)
+    def setFont(self, font):
         pass
 
     # point is a pair of integer 2 Bytes each. String is at least 1 Byte
@@ -53,3 +67,5 @@ class HookedGL:
     def text(self, point, string):
         pass
 
+    def __del__(self) :
+        self.comms.disconnect()

@@ -74,16 +74,3 @@ class Communication:
             return -1
         else :
             return r[0]
-
-lol = Communication('127.0.0.1', 3333)
-lol.connect()
-
-print("index: " + str(lol.pack(0,[[0,0,10,0xff]])))
-print("index: " + str(lol.pack(0,[[0,0,10,0x100]])))
-print("index: " + str(lol.pack(0,[[0,0,10,0xffff]])))
-print("index: " + str(lol.pack(0,[[0,0,10,0x10000]])))
-print("index: " + str(lol.pack(1, [0xff00ff00])))
-print("index: " + str(lol.pack(0,[[0,0,10,0xff,1],1])))
-print("index: " + str(lol.pack(10, [0xff00ff00])))
-print("index: " + str(lol.pack(1, [0xffffff00])))
-lol.disconnect()

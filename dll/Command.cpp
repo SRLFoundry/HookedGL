@@ -2,11 +2,12 @@
 #include <iostream>
 #include "Command.h"
 
-Command::Command(unsigned char cmd, unsigned char l, void **arg)
+Command::Command(unsigned char cmd, unsigned char l, void **arg, int i)
 {
 	cmdId = cmd;
 	length = l;
 	args = arg;
+	id = i;
 }
 Command::Command() {
 
@@ -32,9 +33,13 @@ void Command::printArgs() const{
 		}
 			break;
 	}
+	std::cout << "Id: " << id << std::endl;
 }
 void Command::draw() {
 	std::cout << "not Implemented" << std::endl;
+}
+int Command::getId() {
+	return id;
 }
 Command::~Command()
 {
