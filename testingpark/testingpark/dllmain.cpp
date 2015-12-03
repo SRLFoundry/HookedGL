@@ -1,18 +1,20 @@
-#include <Windows.h>
+#include <windows.h>
+#include "Export.h"
 
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-					 )
+extern "C" bool __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
-	switch (ul_reason_for_call)
+	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
+		DisableThreadLibraryCalls(hinstDLL);
+		return init();
+		break;
+
 	case DLL_PROCESS_DETACH:
 		break;
-	}
-	return TRUE;
-}
 
+	default:
+		break;
+	}
+	return true;
+}

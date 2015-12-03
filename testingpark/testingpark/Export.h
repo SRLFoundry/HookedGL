@@ -1,5 +1,6 @@
+#include <Windows.h>
 #include <gl\GL.h>
-#include <gl/glext.h>
+#include <gl\glext.h>
 
 bool init();
 
@@ -513,8 +514,4 @@ extern BOOL(__stdcall *ptr_wglUseFontBitmapsA) (HDC hdc, DWORD first, DWORD coun
 extern BOOL(__stdcall *ptr_wglUseFontOutlinesW) (HDC hdc, DWORD first, DWORD count, DWORD listBase, FLOAT deviation, FLOAT extrusion, int format, LPGLYPHMETRICSFLOAT lpgmf);
 extern BOOL(__stdcall *ptr_wglUseFontOutlinesA) (HDC hdc, DWORD first, DWORD count, DWORD listBase, FLOAT deviation, FLOAT extrusion, int format, LPGLYPHMETRICSFLOAT lpgmf);
 #endif
-
-
-#endif // EXPORTS_HPP_INCLUDED
-
 
