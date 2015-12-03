@@ -108,6 +108,7 @@ class Communication:
             return -1
         else :
             return r[0]
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 lol = Communication('10.221.81.230', 27015)
@@ -126,4 +127,6 @@ print("index: " + str(lol.pack(0,[[0,0,10,0xff,1],1])))
 print("index: " + str(lol.pack(10, [0xff00ff00])))
 print("index: " + str(lol.pack(1, [0xffffff00])))
 lol.disconnect()
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
