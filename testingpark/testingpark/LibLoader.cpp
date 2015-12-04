@@ -1,10 +1,8 @@
 #include "LibLoader.h"
 
-LibLoader::LibLoader(string lib)
+LibLoader::LibLoader(LPWSTR lib)
 {
-	std::wstring stemp = std::wstring(lib.begin(), lib.end());
-	LPCWSTR sw = stemp.c_str();
-	module = LoadLibrary(sw);
+	module = LoadLibrary(lib);
 }
 
 LibLoader::~LibLoader()

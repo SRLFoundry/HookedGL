@@ -157,10 +157,12 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Export.cpp" />
+    <ClCompile Include="ImportantHooks.cpp" />
     <ClCompile Include="LibLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Export.h" />
+    <ClInclude Include="ImportantHooks.h" />
     <ClInclude Include="LibLoader.h" />
   </ItemGroup>
   <ItemGroup>

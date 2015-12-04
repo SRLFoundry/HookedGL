@@ -7,7 +7,7 @@ using std::string;
 class LibLoader
 {
 public:
-	LibLoader(string lib);
+	LibLoader(LPWSTR lib);
 	~LibLoader();
 	void* getFuncPointer(string funcname);
 private:
