@@ -512,13 +512,10 @@ BOOL(__stdcall *ptr_wglUseFontOutlinesW) (HDC hdc, DWORD first, DWORD count, DWO
 BOOL(__stdcall *ptr_wglUseFontOutlinesA) (HDC hdc, DWORD first, DWORD count, DWORD listBase, FLOAT deviation, FLOAT extrusion, int format, LPGLYPHMETRICSFLOAT lpgmf);
 #endif
 
-bool init()
+BOOL __stdcall init()
 {
 	// Find the opengl dll to load in system32.
-	LPWSTR path;
-	GetSystemDirectory(path, MAX_PATH);
-	wcscat(path, L"\\opengl32.dll");
-	LibLoader OGL(path);
+	LibLoader OGL(L"C:\\Windows\\System32\\opengl32.dll");
 
 	try
 	{
@@ -893,9 +890,9 @@ bool init()
 		ptr_wglUseFontOutlinesA = (BOOL(__stdcall *) (HDC, DWORD, DWORD, DWORD, FLOAT, FLOAT, int, LPGLYPHMETRICSFLOAT))OGL.getFuncPointer("wglUseFontOutlinesA");
 	}
 	catch (std::exception e) {
-		return false;
+		return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 
 extern "C" void __stdcall GLHook_glAccum(GLenum op, GLfloat value)
@@ -921,7 +918,7 @@ ptr_glArrayElement(index);
 extern "C" void __stdcall GLHook_glBegin(GLenum mode)
 {
 	OutputDebugStringA("glBegin");
-	//ptr_glBegin(mode);
+	ptr_glBegin(mode);
 }
 
 extern "C" void __stdcall GLHook_glBitmap(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap)
