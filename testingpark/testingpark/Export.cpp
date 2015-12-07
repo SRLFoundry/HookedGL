@@ -512,7 +512,7 @@ BOOL(__stdcall *ptr_wglUseFontOutlinesW) (HDC hdc, DWORD first, DWORD count, DWO
 BOOL(__stdcall *ptr_wglUseFontOutlinesA) (HDC hdc, DWORD first, DWORD count, DWORD listBase, FLOAT deviation, FLOAT extrusion, int format, LPGLYPHMETRICSFLOAT lpgmf);
 #endif
 
-BOOL __stdcall init()
+bool __stdcall init()
 {
 	// Find the opengl dll to load in system32.
 	LibLoader OGL(L"C:\\Windows\\System32\\opengl32.dll");
@@ -890,9 +890,14 @@ BOOL __stdcall init()
 		ptr_wglUseFontOutlinesA = (BOOL(__stdcall *) (HDC, DWORD, DWORD, DWORD, FLOAT, FLOAT, int, LPGLYPHMETRICSFLOAT))OGL.getFuncPointer("wglUseFontOutlinesA");
 	}
 	catch (std::exception e) {
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
+}
+
+extern "C" __declspec(dllexport) void __stdcall GLHook_test()
+{
+	return;
 }
 
 extern "C" void __stdcall GLHook_glAccum(GLenum op, GLfloat value)

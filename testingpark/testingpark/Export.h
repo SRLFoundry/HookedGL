@@ -2,7 +2,7 @@
 #include <gl\GL.h>
 #include <gl\glext.h>
 
-extern "C" BOOL __stdcall init();
+extern "C" bool __stdcall init();
 
 extern void(__stdcall *ptr_glAccum) (GLenum op, GLfloat value);
 extern void(__stdcall *ptr_glActiveTextureARB) (GLenum texture);
