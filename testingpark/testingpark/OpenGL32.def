@@ -1,5 +1,5 @@
 
-LIBRARY OpenGL32
+LIBRARY OPENGL32
 EXPORTS
 
 glAccum                    =    GLHook_glAccum;

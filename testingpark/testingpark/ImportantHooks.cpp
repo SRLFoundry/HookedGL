@@ -77,6 +77,7 @@ void __stdcall GLHook_glEnable(GLenum cap)
 
 void __stdcall GLHook_glEnd(void)
 {
+	OutputDebugStringA("glEnd");
 	ptr_glEnd();
 }
 
@@ -152,57 +153,48 @@ PROC __stdcall GLHook_wglGetProcAddress(LPCSTR lpszProc)
 	if (FunctionCalled == "glActiveTextureARB")
 	{
 		xDetour(ptr_glActiveTextureARB, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glActiveTextureARB);
+		return reinterpret_cast<PROC>(GLHook_glActiveTextureARB);
 	}
 	else if (FunctionCalled == "glBindBufferARB")
 	{
 		xDetour(ptr_glBindBufferARB, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glBindBufferARB);
+		return reinterpret_cast<PROC>(GLHook_glBindBufferARB);
 	}
 	else if (FunctionCalled == "glBufferDataARB")
 	{
 		xDetour(ptr_glBufferDataARB, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glBufferDataARB);
+		return reinterpret_cast<PROC>(GLHook_glBufferDataARB);
 	}
 	else if (FunctionCalled == "glBufferSubDataARB")
 	{
 		xDetour(ptr_glBufferSubDataARB, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glBufferSubDataARB);
+		return reinterpret_cast<PROC>(GLHook_glBufferSubDataARB);
 	}
 	else if (FunctionCalled == "glDeleteBuffersARB")
 	{
 		xDetour(ptr_glDeleteBuffers, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glDeleteBuffersARB);
+		return reinterpret_cast<PROC>(GLHook_glDeleteBuffersARB);
 	}
 	else if (FunctionCalled == "glDeleteLists")
 	{
 		xDetour(ptr_glDeleteLists, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glDeleteLists);
+		return reinterpret_cast<PROC>(GLHook_glDeleteLists);
 	}
 	else if (FunctionCalled == "glDeleteTextures")
 	{
 		xDetour(ptr_glDeleteTextures, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glDeleteTextures);
+		return reinterpret_cast<PROC>(GLHook_glDeleteTextures);
 	}
 	else if (FunctionCalled == "glMultiTexCoord2fARB")
 	{
 		xDetour(ptr_glMultiTexCoord2fARB, ptr_wglGetProcAddress(lpszProc));
-		return reinterpret_cast<int(__stdcall *)()>(GLHook_glMultiTexCoord2fARB);
+		return reinterpret_cast<PROC>(GLHook_glMultiTexCoord2fARB);
 	}
 	return ptr_wglGetProcAddress(lpszProc);
 }
 
 BOOL __stdcall GLHook_wglSwapBuffers(HDC hdc)
 {
-	ptr_glClear(GL_COLOR_BUFFER_BIT);
-
-	ptr_glDisable(GL_DEPTH_TEST);
-	ptr_glBegin(GL_TRIANGLES);
-		ptr_glColor3f(0.1, 0.2, 0.3);
-		ptr_glVertex3f(0, 0, 0);
-		ptr_glVertex3f(200, 0, 0);
-		ptr_glVertex3f(0, 200, 0);
-	ptr_glEnd();
-	ptr_glEnable(GL_DEPTH_TEST);
+	OutputDebugStringA("wglSwapBuffers");
 	return ptr_wglSwapBuffers(hdc);
 }

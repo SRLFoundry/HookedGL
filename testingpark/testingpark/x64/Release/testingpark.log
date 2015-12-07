@@ -1,0 +1,17 @@
+﻿Build started 12/7/2015 4:20:11 PM.
+     1>Project "C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\testingpark\testingpark.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Release\opengl32.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"opengl32.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Release\opengl32.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Release\opengl32.lib" /MACHINE:X64 /DLL x64\Release\dllmain.obj
+         x64\Release\Export.obj
+         x64\Release\ImportantHooks.obj
+         x64\Release\LibLoader.obj
+            Creating library C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Release\opengl32.lib and object C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Release\opengl32.exp
+         Generating code
+     1>c:\users\daniel lightbourn\documents\github\hookedgl\testingpark\testingpark\export.cpp(519): warning C4700: uninitialized local variable 'path' used
+         Finished generating code
+         testingpark.vcxproj -> C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Release\opengl32.dll
+     1>Done Building Project "C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\testingpark\testingpark.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.29

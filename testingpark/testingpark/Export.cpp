@@ -920,7 +920,8 @@ ptr_glArrayElement(index);
 
 extern "C" void __stdcall GLHook_glBegin(GLenum mode)
 {
-ptr_glBegin(mode);
+	OutputDebugStringA("glBegin");
+	//ptr_glBegin(mode);
 }
 
 extern "C" void __stdcall GLHook_glBitmap(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap)

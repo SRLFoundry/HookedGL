@@ -1,0 +1,17 @@
+﻿Build started 12/7/2015 3:38:27 PM.
+     1>Project "C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\testingpark\testingpark.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\testingpark.dll) does not match the Linker's OutputFile property value (C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\OpenGL32.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(testingpark) does not match the Linker's OutputFile property value (OpenGL32). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\OpenGL32.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"opengl32.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\testingpark.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\testingpark.lib" /MACHINE:X64 /DLL x64\Debug\dllmain.obj
+         x64\Debug\Export.obj
+         x64\Debug\ImportantHooks.obj
+         x64\Debug\LibLoader.obj
+         LINK : C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\OpenGL32.dll not found or not built by the last incremental link; performing full link
+            Creating library C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\testingpark.lib and object C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\testingpark.exp
+         testingpark.vcxproj -> C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\x64\Debug\testingpark.dll
+     1>Done Building Project "C:\Users\Daniel Lightbourn\Documents\GitHub\HookedGL\testingpark\testingpark\testingpark.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.37
